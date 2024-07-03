@@ -7,11 +7,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.leomarkpaway.repositorypatternwithmanualdi.MyApp
 import com.leomarkpaway.repositorypatternwithmanualdi.R
+import com.leomarkpaway.repositorypatternwithmanualdi.view.adapter.NoteAdapter
 import com.leomarkpaway.repositorypatternwithmanualdi.viewmodel.MainViewModel
 import com.leomarkpaway.repositorypatternwithmanualdi.viewmodel.MainViewModelFactory
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
@@ -55,7 +59,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupNoteList() {
-        TODO("Not yet implemented")
+        val context = this@MainActivity
+        lifecycleScope.launch {
+            viewModel.getAllNote().observe(context) { allNote ->
+                noteList.apply {
+                    adapter = NoteAdapter(allNote)
+                    layoutManager =
+                        LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                }
+            }
+        }
     }
 
 }

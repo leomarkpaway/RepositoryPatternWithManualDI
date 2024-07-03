@@ -16,4 +16,6 @@ class MainViewModel(private val noteRepository: NoteRepository) : ViewModel() {
        }
     }
 
+     suspend fun getAllNote() = noteRepository.getAllNote()
+
 }
